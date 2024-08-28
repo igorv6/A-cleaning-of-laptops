@@ -26,8 +26,8 @@ DESCRIBE laptopdata_uncleaned;
 ```sql
 ALTER TABLE laptopdata_uncleaned CHANGE "Unnamed: 0" "Index" INT;
 ```
-### 4. Check and change some datatype into the columns in the dataset
-As seen through the DESCRIBE table command, there are some datatypes that need to be changed.
+### 4. Check and change some data types into the columns in the dataset
+As seen through the DESCRIBE FUNCTION, there are some datatypes that need to be changed.
 Starting from the most simple
 ```sql
 ALTER TABLE laptopdata_uncleaned MODIFY COLUMN Price INT;
