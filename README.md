@@ -15,14 +15,15 @@ CREATE TABLE laptop_backup LIKE laptopdata_uncleaned;
 INSERT INTO laptop_backup
 SELECT * FROM laptopdata_uncleaned;
 ```
-### 2. Check the size of the dataset and the structure of our table : This dataset contains 1274 rows and 12 columns.
+### 2. Check the size of the dataset and the structure of our table
+This dataset contains 1274 rows and 12 columns.
 ```sql
 SELECT COUNT(*) FROM laptopdata_uncleaned;
 
 DESCRIBE laptopdata_uncleaned;
 ```
 ![image](https://github.com/user-attachments/assets/d5f30c8d-30eb-48bd-97f0-b142f6e29db2)
-### 3. Rename the first column "Unnamed: 0" with the simple name "Index"
+### 3. Rename the first column "Unnamed: 0" with the simple name "Laptop"
 ```sql
 ALTER TABLE laptopdata_uncleaned CHANGE "Unnamed: 0" "Index" INT;
 ```
@@ -68,7 +69,7 @@ ALTER TABLE laptopdata_uncleaned MODIFY Inches DECIMAL (4,2);
 ### 5. Check for NULL values
 ```sql
 SELECT * FROM laptopdata_uncleaned
-WHERE "Index" IS NULL
+WHERE Laptop IS NULL
 OR Company IS NULL
 OR TypeName IS NULL
 OR Inches IS NULL
@@ -97,11 +98,11 @@ The main query then selects all records from laptopdata_uncleaned where the corr
 ```sql
 WITH RowNumCte AS (
 SELECT *,
- ROW_NUMBER() OVER (PARTITION BY Company, TypeName, Inches, CPu, Ram, Weight_kg, Price ORDER BY "Index" AS row_num
+ ROW_NUMBER() OVER (PARTITION BY Company, TypeName, Inches, CPu, Ram, Weight_kg, Price ORDER BY laptop AS row_num
 FROM laptopdata_uncleaned
 )
 SELECT *  FROM laptopdata_uncleaned
-WHERE "Index" IN (
+WHERE Laptop IN (
 SELECT "Index" FROM RowNumCte WHERE row_num > 1
 );
 ```
@@ -114,7 +115,7 @@ the entire query returns all records from the laptopdata_uncleaned table that ar
  ```sql
 WITH RowNumCte AS (
 SELECT *,
- ROW_NUMBER() OVER (PARTITION BY Company, TypeName, Inches, CPu, Ram, Weight_kg, Price ORDER BY "Index" AS row_num
+ ROW_NUMBER() OVER (PARTITION BY Company, TypeName, Inches, CPu, Ram, Weight_kg, Price ORDER BY Laptop AS row_num
 FROM laptopdata_uncleaned
 )
 DELETE  FROM laptopdata_uncleaned
@@ -155,7 +156,7 @@ SELECT * FROM laptopdata_uncleaned;
 SELECT Distinct Company FROM laptopdata_uncleaned;
 SELECT Distinct TypeName FROM laptopdata_uncleaned; 
  ```
- I notice that into TypeName column Notebook is repeated two times, I'm goin to fix it with the trim function
+ I notice that into TypeName column Notebook is repeated two times, I go to fix it with the trim function
    ```sql
 UPDATE laptopdata_uncleaned
 SET TypeName = TRIM(TypeName);
