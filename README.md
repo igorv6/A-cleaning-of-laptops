@@ -22,7 +22,7 @@ SELECT COUNT(*) FROM laptopdata_uncleaned;
 DESCRIBE laptopdata_uncleaned;
 ```
 ![image](https://github.com/user-attachments/assets/d5f30c8d-30eb-48bd-97f0-b142f6e29db2)
-### 3. Rename the first column "Unnamed: 0" with the simple name "Index".
+### 3. Rename the first column "Unnamed: 0" with the simple name "Index"
 ```sql
 ALTER TABLE laptopdata_uncleaned CHANGE "Unnamed: 0" "Index" INT;
 ```
@@ -42,7 +42,7 @@ The others needs some other changes as below:
 UPDATE laptopdata_uncleaned
 set Weight = REPLACE(Weight,'kg','');
 ALTER TABLE laptopdata_uncleaned CHANGE COLUMN Weight Weight_kg DECIMAL(4,2);
--- I received an Error, there is a "?" inserted as weight.
+-- I receive an Error, there is a "?" inserted as weight.
 SELECT * FROM laptopdata_uncleaned WHERE Weight = "?" ;
 -- Checking on DELL website I can see that the weight is 1.6 kg, so I update this row
 UPDATE laptopdata_uncleaned
@@ -85,7 +85,7 @@ I find an entire row with NULL value
 
 ![image](https://github.com/user-attachments/assets/b2615b0b-2bce-47f0-b50b-9d13f08ccb6f)
 
-so I can delete it:
+I delete it:
 ```sql
 DELETE FROM laptopdata_uncleaned
 WHERE Company IS NULL; 
@@ -148,8 +148,8 @@ UPDATE laptopdata_uncleaned
 SET Weight = 2.00
 WHERE weight = 0.00;
 ```
-### 8. Check if there are some similar values caused by space character
-The TRIM() function removes the space character OR other specified characters from the start or end of a string.
+### 8. Normalize data
+The TRIM() function removes the space character or other specified characters from the start or end of a string.
  ```sql
 SELECT * FROM laptopdata_uncleaned;
 SELECT Distinct Company FROM laptopdata_uncleaned;
@@ -163,7 +163,8 @@ SET TypeName = TRIM(TypeName);
 
 Before --> ![image](https://github.com/user-attachments/assets/247de141-e819-4da9-8d7c-596b9faf9354)          After --> ![image](https://github.com/user-attachments/assets/888d3f43-9b87-4713-975e-0ec2e1752740)
 
-### 9. Before finishing our cleaning analysis, i'm going to add some columns to improve our analysis 
+### 9. Adding new columns
+Before finishing our cleaning analysis, i add some columns to improve our analysis 
  ```sql
 ALTER TABLE laptopdata_uncleaned
 ADD COLUMN cpu_brand VARCHAR(255) AFTER cpu,
@@ -180,3 +181,5 @@ SET cpu_speed = replace(substring_index(Cpu,' ',-1),'GHz','');
 update laptopdata_uncleaned
 SET cpu_name = replace(replace(Cpu,cpu_brand,' ' ),substring_index(Cpu,' ',-1),' ');
  ```
+### 10. Conclusion
+After cleaning the dataset, it was more consistent and accurate for further use for analysis.    
