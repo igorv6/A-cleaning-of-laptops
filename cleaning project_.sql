@@ -123,7 +123,7 @@ SELECT Distinct TypeName FROM laptopdata_uncleaned;
 UPDATE laptopdata_uncleaned
 SET TypeName = TRIM(TypeName);
 
--- 8) Before finishing our cleaning analysis, i'm goign I add some columns to improve our analysis 
+-- 8) Before finishing our cleaning analysis, I add some columns to improve our analysis 
 ALTER TABLE laptopdata_uncleaned
 ADD COLUMN cpu_brand VARCHAR(255) AFTER cpu,
 ADD COLUMN cpu_name VARCHAR(255) AFTER cpu_brand,
